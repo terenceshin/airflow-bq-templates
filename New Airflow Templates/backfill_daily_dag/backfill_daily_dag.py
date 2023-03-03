@@ -13,6 +13,8 @@ from airflow.operators.python_operator import ShortCircuitOperator
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 sys.path.append(os.path.abspath(os.path.dirname('util')))
+
+CUR_DIR = os.path.abspath(os.path.dirname(__file__))
  
 
 default_dag_args = {
@@ -35,6 +37,7 @@ query = "sql/daily_query.sql"                                               # Ch
 with models.DAG(
         'dataset.table',                                                    # Name DAG <dataset name>.<table_name>
         schedule_interval= '* * * * *',                                     # Specify cron schedule
+        template_searchpath = CUR_DIR,
         default_args=default_dag_args,
         catchup=True
 ) as dag:
